@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Untitled 1</title>
+    <style type="text/css">
+        .style1 {
+            font-size: x-small;
+        }
+    </style>
+</head>
+
+<body>
+<span class="style1">
+<script type="text/javascript">
+/*
+    函数作用：根据数组内容自动调整表格大小,对于空内容写入占位符，对于最后不足整行的用空单元格补足。
+    函数思路：首先计算数组长度，并根据要显示列数计算实际需要行数，然后循环输出行列并根据索引输出数组元素，
+             如果当前数组索引不小于数组长度或当前数组值为空则写入占位符单元格。
+*/
+function makeTable1(cols,a){    //cols为列数，a应该是一个用逗号分开的字符串
+    //alert(a.split(',').length);
+    var t1=new Date().getTime();
+    a=a.split(',');    //显式转换为数组,否则ie不能识别为数组
+    var l=a.length;    //得到数组的长度
+    var rows=parseInt(l/cols)+(l%cols==0?0:1);    //计算出行数
+
+    var outStr="<table border=\"1\" align=\"center\">";
+    for(var i=0;i<rows;i++){
+        outStr+="<tr>";
+        for(var j=0;j<cols;j++){
+            var temp=cols*i+j;    //计算当前索引
+            outStr+=("<td width=\"80\" align=\"center\" height=\"80\">"+( (temp<l&&a[temp]!='') ? a[temp]:" ")+"</td>");
+        }
+        outStr+="</tr>"
+    }
+    outStr+="</table>";
+    document.write(outStr+"</br><center>执行时间："+(new Date().getTime()-t1)+"</center></br>");
+    //alert(rows);
+}
+/*
+    函数作用：同上
+    函数思路：计算数组长度，然后根据长度循环输出元素值，如果当前循环变量值是列数的整数倍（余数为0），
+             则输出行结束标记。否则输出列信息。然后计算当前循环变量值是否是列数的整数倍，如果不是，利用循环补足。直至补齐。
+*/
+function makeTable2(cols,a){
+    var t2=new Date().getTime();
+    a=a.split(',');
+    var l=a.length;
+    var outStr="<table border=\"1\" align=\"center\">";
+    for(var i=0;i<l;i++){
+        var temp=(i+1)%cols;
+        if(i==0||temp==1){
+            outStr+="<tr>";
+        }
+
+        outStr+=("<td width=\"80\" height=\"80\" align=\"center\">"+a[i]+"</td>");
+
+        if(temp==0){
+            outStr+="</tr>";
+        }
+    }
+
+    var x=i%cols;
+    if(x!=0){
+        for(var i=0;i<(cols-x);i++){
+            outStr+="<td> </td>";
+        }
+        outStr+="</tr>"
+    }
+    outStr+="</table>"
+    document.write(outStr+"</br><center>执行时间："+(new Date().getTime()-t2)+"</center></br>");
+}
+var str="Artist Holding a Thistle，fagaf,s,ge,gdr,rh,dj,xtd,hs,zge,hja,dh,jtzddz ";
+str+=str;
+str+=str;
+makeTable1(5,str);
+
+</script>
+</span>
+</body>
+
+</html>
