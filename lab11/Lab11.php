@@ -37,9 +37,9 @@ $conn = new mysqli('localhost', 'root', '4161030.zc', 'travel');
 <main class="container">
     <div class="panel panel-default">
         <div class="panel-heading">Filters</div>
-        <div class="panel-body">
+        <div class="panel-body" >
             <form action="Lab11.php" method="post" class="form-horizontal">
-                <div class="form-inline">
+                <div class="form-inline" >
                     <select name="continent" class="form-control">
                         <option value="0">Select Continent</option>
                         <?php
@@ -49,7 +49,7 @@ $conn = new mysqli('localhost', 'root', '4161030.zc', 'travel');
                         //display the list of continents
 
                         $sql = "SELECT * from continents ";
-                        $result = mysqli_query($conn,$sql);
+                        $result = $conn->query($sql);
 
                         while($row = $result->fetch_assoc()) {
                             echo '<option value=' . $row['ContinentCode'] . '>' . $row['ContinentName'] . '</option>';
@@ -66,7 +66,7 @@ $conn = new mysqli('localhost', 'root', '4161030.zc', 'travel');
                         /* display list of countries */
 
                         $sql = "SELECT * from countries ";
-                        $result = mysqli_query($conn,$sql);
+                        $result = $conn->query($sql);
 
                         while($row = $result->fetch_assoc()) {
                             echo '<option value=' . $row['ISO'] . '>' . $row['CountryName'] . '</option>';
@@ -101,43 +101,45 @@ $conn = new mysqli('localhost', 'root', '4161030.zc', 'travel');
         </li>
         */
 
-            //获得提交的数据的值
+
+
             $continentCode = $_POST["continent"];
             $countryCodeISO = $_POST["country"];
 
             if($continentCode == "0" && $countryCodeISO == "0"){
                 $sql = "SELECT * from ImageDetails";
-                $result = mysqli_query($conn,$sql);
+                $result = $conn->query($sql);
             }
 
             else if ($continentCode == "0" && $countryCodeISO != "0"){
-                $query = "SELECT * from ImageDetails where CountryCodeISO='$countryCodeISO'";
-                $result = mysqli_query($conn,$query);
+                $sql = "SELECT * from ImageDetails where CountryCodeISO='$countryCodeISO'";
+                $result = $conn->query($sql);
             }
 
             else if($continentCode != "0" && $countryCodeISO == "0"){
-                $query = "SELECT * from ImageDetails where ContinentCode='$continentCode'";
-                $result = mysqli_query($conn,$query);
+                $sql = "SELECT * from ImageDetails where ContinentCode='$continentCode'";
+                $result = $conn->query($sql);
             }
 
             else if($continentCode != "0" && $countryCodeISO != "0"){
-                $query = "SELECT * from ImageDetails where ContinentCode='$continentCode' AND CountryCodeISO='$countryCodeISO'";;
-                $result = mysqli_query($conn,$query);
+                $sql = "SELECT * from ImageDetails where ContinentCode='$continentCode' AND CountryCodeISO='$countryCodeISO'";;
+                $result = $conn->query($sql);
             }
 
-            else{
+
+        else{
 
             $sql = "SELECT * from ImageDetails";
-            $result = mysqli_query($conn,$sql);
+            $result = $conn->query($sql);
         }
 
         while($row = $result->fetch_assoc()) {
             echo '<li>';
             echo '<a href="detail.php?id='.$row['ImageID'].'" class="img-responsive">';
             echo '<img src="images/square-medium/'.$row['Path'].'" alt="'.$row['Title'].'">';
-            echo '<div class="caption">';
-            echo '<div class="blur"></div>';
-            echo ' <div class="caption-text">';
+            echo '<div class="caption" >';
+            echo '<div class="blur" ></div>';
+            echo ' <div class="caption-text" >';
             echo ' <p>'.$row['Title'].'</p>';
             echo '</div>';
             echo ' </div>';
